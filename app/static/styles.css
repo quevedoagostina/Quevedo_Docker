@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    height: 100%;
+  }
+
+body {
+    font-family: Arial, sans-serif;
+    background-image: linear-gradient(45deg, #e7afcc, #f772b4);
+    background-size: 100% 100%;
+    background-attachment: fixed;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+#categoriasDropdown {
+    background-color: #b0277b; 
+    border-color: #b02760; 
+}
+#categoriasDropdown .ml-2 { 
+    display: none; 
+}
+  
+  /* Agregar z-index al menú desplegable */
+[aria-labelledby="categoriasDropdown"] {
+  z-index: 9999; /* Puedes ajustar el valor si es necesario */
+}

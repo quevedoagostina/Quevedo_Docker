@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>{% block title %} {% endblock %}</title>
+</head>
+<body>
+    <script>
+        // JavaScript para mostrar y ocultar el menú desplegable al hacer clic en el botón
+        document.addEventListener('DOMContentLoaded', function () {
+            const categoriasDropdown = document.getElementById('categoriasDropdown');
+            const categoriasMenu = document.querySelector('[aria-labelledby="categoriasDropdown"]');
+    
+            categoriasDropdown.addEventListener('click', function () {
+                if (categoriasMenu.classList.contains('hidden')) {
+                    categoriasMenu.classList.remove('hidden');
+                    categoriasDropdown.setAttribute('aria-expanded', 'true');
+                } else {
+                    categoriasMenu.classList.add('hidden');
+                    categoriasDropdown.setAttribute('aria-expanded', 'false');
+                }
+            });
+    
+            // Cerrar el menú desplegable si se hace clic en cualquier parte del documento, excepto en el botón o el menú
+            document.addEventListener('click', function (event) {
+                const isClickInside = categoriasDropdown.contains(event.target) || categoriasMenu.contains(event.target);
+                if (!isClickInside) {
+                    categoriasMenu.classList.add('hidden');
+                    categoriasDropdown.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+    </script>
+    <nav class="bg-gradient-to-r from-pink-500 via-pink-600 to-pink-700">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div class="relative flex h-16 items-center justify-between">
+                <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                    <div class="flex flex-shrink-0 items-center">
+                        <a href="{{ url_for('index') }}">
+                            <img class="h-8 w-auto" src="{{ url_for('static', filename='logo.png') }}" alt="Agos logo">
+                        </a>                          
+                    </div>
+                    <div class="hidden sm:ml-6 sm:block">
+                        <div class="flex space-x-4">
+                            <a href="{{ url_for('posteos') }}" class="bg-pink-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Posteos</a>
+
+                            <!-- Agrega el menú desplegable para las categorías -->
+                            <div class="relative inline-block text-left">
+                                <button type="button" class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium" id="categoriasDropdown" aria-haspopup="true" aria-expanded="false">
+                                    Categorías
+                                    <!-- Ícono para el menú desplegable -->
+                                    <svg class="ml-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                                </button>
+                                <div class="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden" role="menu" aria-orientation="vertical" aria-labelledby="categoriasDropdown" tabindex="-1">
+                                    <div class="py-1" role="none">
+                                        {% for categoria in categorias %}
+                                        <a href="{{ url_for('categoria', categoria_id=categoria.id) }}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1">{{ categoria.nombre }}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fin del menú desplegable -->
+
+                            <a href="{{ url_for('crear_posteo') }}" class="text-gray-300 hover:bg-pink-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Crear Post</a>
+                            {% if 'user_id' not in session %}
+                                <a href="{{ url_for('login') }}" class="text-gray-300 hover:bg-pink-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Iniciar sesión</a>
+                            {% else %}
+                                <a href="{{ url_for('logout_view') }}" class="text-gray-300 hover:bg-pink-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Cerrar sesión</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

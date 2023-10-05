@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %} 
+Nueva Publicación
+{% endblock %} 
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-md p-8 max-w-4xl mx-auto mt-8">
+    <h1 class="text-3xl font-bold mb-6">Crear un nuevo posteo</h1>
+    <form method="post" class="space-y-4" autocomplete="off">
+        <div>
+            <label for="titulo" class="block font-semibold text-gray-700">Título:</label>
+            <input type="text" id="titulo" name="titulo" required class="w-full border rounded-md py-2 px-3 mt-2 focus:outline-none focus:ring focus:border-pink-500">
+        </div>
+
+        <div>
+            <label for="contenido" class="block font-semibold text-gray-700">Contenido:</label>
+            <textarea id="contenido" name="contenido" required class="w-full border rounded-md py-2 px-3 mt-2 focus:outline-none focus:ring focus:border-pink-500"></textarea>
+        </div>
+
+        <div>
+            <label for="categoria" class="block font-semibold text-gray-700">Categoría:</label>
+            <select id="categoria" name="categoria" class="w-full border rounded-md py-2 px-3 mt-2 focus:outline-none focus:ring focus:border-pink-500">
+                {% for categoria in categorias %}
+                    <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <input type="submit" value="Crear Posteo" class="mt-4 bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700 focus:outline-none focus:ring focus:border-pink-500">
+    </form>
+
+    <div class="mt-8 flex justify-between">
+        <a href="{{ url_for('posteos') }}" class="text-pink-600 font-semibold hover:underline">Volver a los posteos</a>  
+</div>
+{% endblock %}
